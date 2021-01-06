@@ -21,18 +21,24 @@ settings.refreshSettings(completion: { (error) in
 })
 ```
 
-Reading a value in Swift:
+##### Reading a value in Swift:
 ```swift
 /// Read the appropriate type via type interpolation
 let value: String? = try? settings.getValue(forKey: "login")
 ```
 
-Reading a value in Obj-C:
+##### Reading a value in Obj-C:
 ```obj-c
 /// Use a specific getter
 NSString *value = [settings getStringForKey:@"login"];
 ```
 
+##### Basic access authentication:
+```swift
+let basicAuth = BasicAuthCredentials(login: "myLogin", password: "myPassword")
+
+let settingsWithAuth = try? RemoteSettings(settingsJsonURLString: endpointWithAuth, basicAuth: basicAuth)
+```
 ### Facts
 
 - The cached data is persistent and available after the app relaunch. It uses UserDefaults to store the cached data.
