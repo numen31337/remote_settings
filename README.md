@@ -12,12 +12,12 @@ guard let settings = try? RemoteSettings(settingsJsonURLString: "https://api.git
 
 /// Fetch the latest data
 settings.refreshSettings(completion: { (error) in
-if let error = error {
-	print(error)
-}
+	if let error = error {
+		print(error)
+	}
 
-/// Read the data
-let value: String? = try? settings.getValue(forKey: "login")
+	/// Read the data
+	let value: String? = try? settings.getValue(forKey: "login")
 })
 ```
 
