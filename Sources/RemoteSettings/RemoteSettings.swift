@@ -2,7 +2,6 @@ import Foundation
 
 @objcMembers
 public class RemoteSettings: NSObject {
-    private static let keyCache = "RemoteSettingsCache"
     private let settingsRequest: URLRequest
     private let userDefaults: UserDefaults
     
@@ -65,8 +64,15 @@ public class RemoteSettings: NSObject {
         }
     }
     
+    private var cacheKey: String? { get {
+        guard let pathHash = settingsRequest.url?.absoluteString.hashValue else { return nil }
+        
+        return "RC_\(pathHash)"
+    }}
+    
     private func readCachedSettings() throws -> Dictionary<String, Any>? {
-        guard let rawSettings = userDefaults.data(forKey: RemoteSettings.keyCache) else { return nil }
+        guard let cacheKey = cacheKey else { return nil }
+        guard let rawSettings = userDefaults.data(forKey: cacheKey) else { return nil }
         guard let json = try? JSONSerialization.jsonObject(with: rawSettings, options: []) as? [String: Any] else {
             throw RemoteSettingsError.runtime("Unable to parse json, data length: \(rawSettings.count)")
         }
@@ -78,9 +84,12 @@ public class RemoteSettings: NSObject {
         guard JSONSerialization.isValidJSONObject(json) else {
             throw RemoteSettingsError.runtime("Invaid JSON object: \(json)")
         }
+        guard let cacheKey = cacheKey else {
+            throw RemoteSettingsError.runtime("Unable to parse the request for the url.absoluteString.")
+        }
         
         let data = try JSONSerialization.data(withJSONObject: json, options: [])
-        userDefaults.setValue(data, forKey: RemoteSettings.keyCache)
+        userDefaults.setValue(data, forKey: cacheKey)
     }
     
     /// Fetches the settings from the remote
