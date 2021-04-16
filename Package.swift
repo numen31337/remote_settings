@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "RemoteSettings",
     platforms: [
-        .iOS(.v8),
+        .iOS(.v9),
         .watchOS(.v3),
         .macOS(.v10_13)
     ],
