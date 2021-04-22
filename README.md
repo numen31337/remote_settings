@@ -39,6 +39,15 @@ let basicAuth = BasicAuthCredentials(login: "myLogin", password: "myPassword")
 
 let settingsWithAuth = try? RemoteSettings(settingsJsonURLString: endpointWithAuth, basicAuth: basicAuth)
 ```
+
+### Installation
+
+##### SPM
+Repository: `https://github.com/numen31337/remote_settings.git`, Branch: `main`
+
+##### CocoaPods
+`pod 'RemoteSettings', :git => 'https://github.com/numen31337/remote_settings.git'`
+
 ### Facts
 
 - The cached data is persistent and available after the app relaunch. It uses UserDefaults to store the cached data.
